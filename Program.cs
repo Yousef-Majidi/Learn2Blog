@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CommandLine;
-
-namespace Learn2Blog
+﻿namespace Learn2Blog
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            await Parser.Default.ParseArguments<Options>(args)
-                .WithParsedAsync(RunWithOptions);
-        }
+            var options = CommandLineParser.ParseCommandLineArgs(args);
 
-        static async Task RunWithOptions(Options options)
-        {
+            if (options == null)
+            {
+                Console.WriteLine("Error parsing command line arguments");
+                return;
+            }
+
             if (options.ShowVersion)
             {
                 Console.WriteLine($"Learn2Blog v{GetAppVersion()}");
@@ -26,26 +21,34 @@ namespace Learn2Blog
             if (options.ShowHelp)
             {
                 Console.WriteLine("Learn2Blog - Convert .txt files to .html");
-                Console.WriteLine("Usage: learn2blog [options] <input>");
+                Console.WriteLine("Usage: learn2blog [option] <input>");
+                Console.WriteLine("NOTE: <input> can be a .txt file or a directory");
                 Console.WriteLine("Options:");
-                Console.WriteLine("  -v, --version    Show version information");
-                Console.WriteLine("  -h, --help       Show help information");
+                Console.WriteLine("  -v, -version    Show version information");
+                Console.WriteLine("  -h, -help       Show help information");
                 return;
             }
+
+            string inputPath = options.InputPath;
+
+            if (File.Exists(inputPath))
+            {
+                Console.WriteLine($"Converting {inputPath}...");
+            }
+            else if (Directory.Exists(inputPath))
+            {
+                Console.WriteLine($"Converting all files in {inputPath}...");
+            }
+            else
+            {
+                Console.WriteLine($"Input path {inputPath} does not exist");
+            }
+            return;
         }
 
         static string GetAppVersion()
         {
             return typeof(Program).Assembly.GetName().Version.ToString();
         }
-    }
-
-    class Options
-    {
-        [Option('v', "version", HelpText = "Show version information")]
-        public bool ShowVersion { get; set; }
-
-        [Option('h', "help", HelpText = "Show help information")]
-        public bool ShowHelp { get; set; }
     }
 }

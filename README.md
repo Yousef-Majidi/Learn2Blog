@@ -38,8 +38,25 @@ dotnet build
 
 ### Run the App
 
-Once the build is successful, you can run the console application with the following command:
+After the build is complete, navigate to `bin/Debug/net7.0`:
 
 ```bash
-dotnet run
+cd bin/Debug/net7.0
+```
+
+You should now have a `Learn2Blog.exe` file in your directory. Run the app by using one of the options or provide an input argument:
+
+```bash
+// shows help
+./Learn2Blog.exe -h
+```
+
+```bash
+// converts the input.txt file into html
+./Learn2Blog.exe input.txt
+```
+
+```bash
+// converts all .txt files in the directory into html
+./Learn2Blog.exe inputDirectory
 ```
