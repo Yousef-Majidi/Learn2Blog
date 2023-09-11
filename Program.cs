@@ -30,14 +30,26 @@
             }
 
             string inputPath = options.InputPath;
+            string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "til");
+
+            if (Directory.Exists(outputPath))
+            {
+                Console.WriteLine($"Output directory {outputPath} already exists. Deleting old directory...");
+                Directory.Delete(outputPath, true);
+            }
+            Directory.CreateDirectory(outputPath);
 
             if (File.Exists(inputPath))
             {
-                Console.WriteLine($"Converting {inputPath}...");
+
+                HtmlProcessor.ProcessFile(inputPath, outputPath);
             }
             else if (Directory.Exists(inputPath))
             {
-                Console.WriteLine($"Converting all files in {inputPath}...");
+                foreach (string file in Directory.GetFiles(inputPath, "*.txt"))
+                {
+                    HtmlProcessor.ProcessFile(file, outputPath);
+                }
             }
             else
             {
