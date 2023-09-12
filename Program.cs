@@ -7,7 +7,6 @@
             var options = CommandLineParser.ParseCommandLineArgs(args);
             if (options != null)
             {
-
                 if (options.ShowVersion)
                 {
                     CommandLineUtils.ShowVersion();

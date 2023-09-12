@@ -13,48 +13,42 @@ namespace Learn2Blog
                 return null;
             }
 
-            if (args.Contains("-v") || args.Contains("--version"))
+            if (args[0].Contains('-'))
             {
-                options.ShowVersion = true;
-            }
-            else if (args.Contains("-h") || args.Contains("--help"))
-            {
-                options.ShowHelp = true;
-            }
-            else if (args.Contains("-i") || args.Contains("--input"))
-            {
-                int inputIndex = Array.IndexOf(args, "-i");
-                if (inputIndex == -1)
+                if (args.Contains("-v") || args.Contains("--version"))
                 {
-                    inputIndex = Array.IndexOf(args, "--input");
+                    options.ShowVersion = true;
+                    return options;
                 }
 
-                if (inputIndex == -1 || inputIndex + 1 >= args.Length)
+                if (args.Contains("-h") || args.Contains("--help"))
                 {
-                    CommandLineUtils.Logger("Error: Input path not specified.",
-                    "Use -i or --input to specify the input path and provide the path as the next argument:",
-                    "example: Learn2Blog -i <input>");
-                    return null;
+                    options.ShowHelp = true;
+                    return options;
                 }
 
-                options.InputPath = args[inputIndex + 1];
+                CommandLineUtils.Logger("Error: Invalid command line arguments.", "See the help menu below:");
+                CommandLineUtils.ShowHelp();
             }
-            else if (args.Length > 0)
+
+            if (args.Length == 1)
             {
-                CommandLineUtils.Logger("Error: Invalid command line arguments. See the help menu below:");
+                options.InputPath = args[0];
+                return options;
+            }
+            else
+            {
+                CommandLineUtils.Logger("Error: Invalid command line arguments", "See the help menu below:");
                 CommandLineUtils.ShowHelp();
                 return null;
             }
-            return options;
         }
     }
 
     public class CommandLineOptions
     {
         public bool ShowVersion { get; set; }
-
         public bool ShowHelp { get; set; }
-
         public required string InputPath { get; set; }
     }
 }

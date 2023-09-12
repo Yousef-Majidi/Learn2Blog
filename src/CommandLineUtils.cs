@@ -18,13 +18,12 @@ namespace Learn2Blog
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Learn2Blog - Convert .txt files to .html");
             Console.WriteLine("Usage 1: learn2blog [option]");
-            Console.WriteLine("Usage 2: learn2blog [command] <input>");
+            Console.WriteLine("Usage 2: learn2blog <input>");
+            Console.WriteLine("NOTE:<input> can be a file or a directory");
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Options:");
             Console.WriteLine("  -h, --ShowHelp     Show this help message");
             Console.WriteLine("  -v, --version      Show version information");
-            Console.WriteLine("Commands:");
-            Console.WriteLine("  -i, --input        Allows you to specify the input path");
             Console.WriteLine("------------------------------------------------------------");
         }
 
