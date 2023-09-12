@@ -6,6 +6,13 @@ namespace Learn2Blog
         {
             CommandLineOptions options = new() { InputPath = "" };
 
+            if (args.Length == 0)
+            {
+                CommandLineUtils.Logger("Error: No command line arguments specified. See the help menu below:");
+                CommandLineUtils.ShowHelp();
+                return null;
+            }
+
             if (args.Contains("-v") || args.Contains("--version"))
             {
                 options.ShowVersion = true;
@@ -24,11 +31,19 @@ namespace Learn2Blog
 
                 if (inputIndex == -1 || inputIndex + 1 >= args.Length)
                 {
-                    Console.WriteLine("Error: Input path not specified. Use -i or --input to specify the input path");
+                    CommandLineUtils.Logger("Error: Input path not specified.",
+                    "Use -i or --input to specify the input path and provide the path as the next argument:",
+                    "example: Learn2Blog -i <input>");
                     return null;
                 }
 
                 options.InputPath = args[inputIndex + 1];
+            }
+            else if (args.Length > 0)
+            {
+                CommandLineUtils.Logger("Error: Invalid command line arguments. See the help menu below:");
+                CommandLineUtils.ShowHelp();
+                return null;
             }
             return options;
         }
