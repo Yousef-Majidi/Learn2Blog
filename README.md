@@ -60,3 +60,9 @@ You should now have a `Learn2Blog.exe` file in your directory. Run the app by us
 # converts all .txt files in the directory into html
 ./Learn2Blog.exe inputDirectory
 ```
+
+#### notes on usage (to be added to readme.md properly later):
+
+-   the app will create a default output directory called "til" in the current directory if it doesn't exist. If that directory exists, it will overwrite the files in it.
+-   the name of the input files will be used as the title of the html files.
+-   if no option flag is provided, the app will look for the first argument provided as the input file or directory.
