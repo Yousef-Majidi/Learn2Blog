@@ -64,5 +64,5 @@ You should now have a `Learn2Blog.exe` file in your directory. Run the app by us
 #### notes on usage (to be added to readme.md properly later):
 
 -   the app will create a default output directory called "til" in the current directory if it doesn't exist. If that directory exists, it will overwrite the files in it.
--   the name of the input files will be used as the title of the html files.
+-   the name of the input files will be used as the title of the html files, unless there is a title specified in the input file. A title is the first line of the input file followed by 2 new lines (\n\n).
 -   if no option flag is provided, the app will look for the first argument provided as the input file or directory.

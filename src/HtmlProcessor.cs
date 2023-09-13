@@ -6,6 +6,14 @@ namespace Learn2Blog
     {
         public static string ConvertTextToHtml(string title, string text)
         {
+            // check for a title
+            int titleStart = text.IndexOf("\r\n\r\n\r\n");
+            if (titleStart > 0)
+            {
+                title = text[..titleStart].Trim();
+                text = text[(titleStart + 3)..].Trim();
+            }
+
             StringBuilder htmlBuilder = new();
 
             // html
@@ -22,6 +30,9 @@ namespace Learn2Blog
 
             // body
             htmlBuilder.AppendLine("<body>");
+
+            // title
+            htmlBuilder.AppendLine($"<h1>{title}</h1>");
 
             // split text into paragraphs based on new lines
             string[] paragraphs = text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -51,11 +62,11 @@ namespace Learn2Blog
                 string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
                 File.WriteAllText(outputFileName, html);
 
-                Console.WriteLine($"File converted: {outputFileName}");
+                CommandLineUtils.Logger($"File converted: {outputFileName}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing file: {ex.Message}");
+                CommandLineUtils.Logger($"Error: failed to process file: {ex.Message}");
             }
         }
     }
