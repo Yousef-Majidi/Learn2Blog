@@ -1,6 +1,7 @@
-# learn2blog
+# Learn2Blog
 
-A command-line app to convert a text file to HTML
+This is an open source command line app to help you quickly convert your text notes into html files so they can be easily published on your blog.
+With this tool, you can write your notes in plain text files and convert them into html files with a single command. This way, you can focus on learning to blog and not worry about the technical details of creating a blog.
 
 ## Building and Running the App
 
@@ -12,7 +13,7 @@ Before you begin, make sure you have the following prerequisites installed on yo
 
 -   [.NET SDK](https://dotnet.microsoft.com/en-us/download) - Ensure you have the .NET SDK installed to build and run C# applications.
 
-### Clone the Repository
+### 1. Clone the Repository
 
 If you haven't already, clone this repository to your local machine using Git:
 
@@ -20,23 +21,23 @@ If you haven't already, clone this repository to your local machine using Git:
 git clone https://github.com/Yousef-Majidi/Learn2Blog.git
 ```
 
-### Navigate to the Project Directory
+### 2. Navigate to the Project Directory
 
 change your working directory to the project folder:
 
 ```bash
-cd learn2blog
+cd Learn2Blog
 ```
 
-### Build the App
+### 3. Build the App
 
-Use the following command to build the C# console application:
+Use the following command to build the application:
 
 ```bash
 dotnet build
 ```
 
-### Run the App
+### 4. Run the App
 
 After the build is complete, navigate to `bin/Debug/net7.0`:
 
@@ -44,7 +45,11 @@ After the build is complete, navigate to `bin/Debug/net7.0`:
 cd bin/Debug/net7.0
 ```
 
-You should now have a `Learn2Blog.exe` file in your directory. Run the app by using one of the options or provide an input argument:
+You should now have a `Learn2Blog.exe` file in your directory.
+
+## Usage
+
+Run the app by using one of the options or provide an input argument:
 
 ```bash
 # shows help
@@ -52,7 +57,18 @@ You should now have a `Learn2Blog.exe` file in your directory. Run the app by us
 ```
 
 ```bash
-# converts the input.txt file into html
+# shows version
+./Learn2Blog.exe -v
+```
+
+```bash
+# converts the input.txt file into html and outputs in the specified output directory
+# can also be used with a directory as the input
+./Learn2Blog.exe -o input.txt outputDirectory
+```
+
+```bash
+# converts the input.txt file into html and outputs in the default directory
 ./Learn2Blog.exe input.txt
 ```
 
@@ -61,8 +77,16 @@ You should now have a `Learn2Blog.exe` file in your directory. Run the app by us
 ./Learn2Blog.exe inputDirectory
 ```
 
-#### notes on usage (to be added to readme.md properly later):
+### Notes on Usage:
 
--   the app will create a default output directory called "til" in the current directory if it doesn't exist. If that directory exists, it will overwrite the files in it.
--   the name of the input files will be used as the title of the html files, unless there is a title specified in the input file. A title is the first line of the input file followed by 2 new lines (\n\n).
--   if no option flag is provided, the app will look for the first argument provided as the input file or directory.
+-   The app will place the output in a directory called `til` by default.
+-   If the output directory is specified with the `-o` flag, this directory will be used instead.
+-   If the output directory already exists, the app will overwrite the files in it.
+-   The name of the output file is the same name as the input file by default unless a title is specified in the input file.
+-   A title in the input file is the first line of the file followed by 2 empty lines:
+    ```txt
+    This is the title
+    <empty line>
+    <empty line>
+    This is the content of the file
+    ```
