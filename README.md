@@ -64,17 +64,17 @@ Run the app by using one of the options or provide an input argument:
 ```bash
 # converts the input.txt file into html and outputs in the specified output directory
 # can also be used with a directory as the input
-./Learn2Blog.exe -o input.txt outputDirectory
+./Learn2Blog.exe -o inputSample.txt outputDirectory
 ```
 
 ```bash
 # converts the input.txt file into html and outputs in the default directory
-./Learn2Blog.exe input.txt
+./Learn2Blog.exe inputSample.txt
 ```
 
 ```bash
-# converts all .txt files in the directory into html
-./Learn2Blog.exe inputDirectory
+# converts all .txt files in the directory into html and outputs in the default directory, unless specified with the -o flag
+./Learn2Blog.exe inputSampleDirectory
 ```
 
 ### Notes on Usage:
@@ -85,6 +85,7 @@ Run the app by using one of the options or provide an input argument:
 -   The name of the output file is the same name as the input file.
 -   The title of the html file is the same as the input file name by default, unless a title is specified in the input file.
 -   A title in the input file is the first line of the file followed by 2 empty lines:
+
     ```txt
     This is the title
     <empty line>
