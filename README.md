@@ -82,7 +82,8 @@ Run the app by using one of the options or provide an input argument:
 -   The app will place the output in a directory called `til` by default.
 -   If the output directory is specified with the `-o` flag, this directory will be used instead.
 -   If the output directory already exists, the app will overwrite the files in it.
--   The name of the output file is the same name as the input file by default unless a title is specified in the input file.
+-   The name of the output file is the same name as the input file.
+-   The title of the html file is the same as the input file name by default, unless a title is specified in the input file.
 -   A title in the input file is the first line of the file followed by 2 empty lines:
     ```txt
     This is the title
