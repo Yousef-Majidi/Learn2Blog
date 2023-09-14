@@ -30,8 +30,15 @@
                 }
                 else if (Directory.Exists(inputPath))
                 {
+                    string[] files = Directory.GetFiles(inputPath, "*.txt");
+                    if (files.Length == 0)
+                    {
+                        CommandLineUtils.Logger($"No txt files found in directory {inputPath}");
+                        return;
+                    }
+
                     CommandLineUtils.CreateOutputDirectory(outputPath);
-                    foreach (string file in Directory.GetFiles(inputPath, "*.txt"))
+                    foreach (string file in files)
                     {
                         HtmlProcessor.ProcessFile(file, outputPath);
                     }

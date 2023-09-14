@@ -17,7 +17,7 @@ Before you begin, make sure you have the following prerequisites installed on yo
 If you haven't already, clone this repository to your local machine using Git:
 
 ```bash
-git clone https://github.com/Yousef-Majidi/learn2blog.Git
+git clone https://github.com/Yousef-Majidi/Learn2Blog.git
 ```
 
 ### Navigate to the Project Directory

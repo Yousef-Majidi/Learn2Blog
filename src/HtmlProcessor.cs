@@ -1,8 +1,9 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Learn2Blog
 {
-    public class HtmlProcessor
+    public partial class HtmlProcessor
     {
         public static string ConvertTextToHtml(string title, string text)
         {
@@ -31,16 +32,21 @@ namespace Learn2Blog
             // body
             htmlBuilder.AppendLine("<body>");
 
-            // title
-            htmlBuilder.AppendLine($"<h1>{title}</h1>");
+            // title -- only if title is specified in the input file
+            if (titleStart > 0)
+            {
+                htmlBuilder.AppendLine($"<h1>{title}</h1>");
+            }
 
             // split text into paragraphs based on new lines
-            string[] paragraphs = text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] paragraphs = NewParagraphRegex().Split(text).Select(paragraph => paragraph.Trim()).ToArray();
 
             // iterate through paragraphs and wrap each in <p> tags
             foreach (string paragraph in paragraphs)
             {
-                htmlBuilder.AppendLine($"<p>{paragraph.Trim()}</p>");
+                // replace line breaks with spaces to keep the text in the same line
+                string paragraphText = paragraph.Replace("\r\n", " ");
+                htmlBuilder.AppendLine($"<p>{paragraphText.Trim()}</p>");
             }
 
             htmlBuilder.AppendLine("</body>");
@@ -54,6 +60,13 @@ namespace Learn2Blog
 
         public static void ProcessFile(string inputPath, string outputPath)
         {
+            // if the file is not a text file, log and return
+            if (Path.GetExtension(inputPath) != ".txt")
+            {
+                CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text file");
+                return;
+            }
+
             try
             {
                 string text = File.ReadAllText(inputPath);
@@ -69,5 +82,8 @@ namespace Learn2Blog
                 CommandLineUtils.Logger($"Error: failed to process file: {ex.Message}");
             }
         }
+
+        [GeneratedRegex("\\n\\s*\\n")]
+        private static partial Regex NewParagraphRegex();
     }
 }
