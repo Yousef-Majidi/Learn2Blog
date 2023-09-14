@@ -19,8 +19,9 @@
                     return;
                 }
 
+                string currentDirectory = Directory.GetCurrentDirectory();
                 string inputPath = options.InputPath;
-                string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "til");
+                string outputPath = options.OutputPath != null ? Path.Combine(currentDirectory, options.OutputPath) : Path.Combine(currentDirectory, "til");
 
                 if (File.Exists(inputPath))
                 {
@@ -37,7 +38,7 @@
                 }
                 else
                 {
-                    Console.WriteLine($"Input path {inputPath} does not exist");
+                    CommandLineUtils.Logger($"Input path {inputPath} does not exist");
                 }
             }
         }

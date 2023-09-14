@@ -27,6 +27,21 @@ namespace Learn2Blog
                     return options;
                 }
 
+                if (args.Contains("-o") || args.Contains("--output"))
+                {
+                    // if output flag is used without a second argument
+                    if (args.Length < 3)
+                    {
+                        CommandLineUtils.Logger("Error: Output flag must be used with an output path specified.", "See the help menu below:");
+                        CommandLineUtils.ShowHelp();
+                        return null;
+                    }
+
+                    options.InputPath = args[1];
+                    options.OutputPath = args[2];
+                    return options;
+                }
+
                 CommandLineUtils.Logger("Error: Invalid command line arguments.", "See the help menu below:");
                 CommandLineUtils.ShowHelp();
             }
@@ -50,5 +65,6 @@ namespace Learn2Blog
         public bool ShowVersion { get; set; }
         public bool ShowHelp { get; set; }
         public required string InputPath { get; set; }
+        public string? OutputPath { get; set; }
     }
 }
