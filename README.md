@@ -92,3 +92,13 @@ Run the app by using one of the options or provide an input argument:
     <empty line>
     This is the content of the file
     ```
+
+## Bug Report
+
+When filing issues and bugs, you should include as much detail as possible:
+
+- A short description of the bug
+- Steps to reproduce the bug (what were you doing when encountered the bug)
+- The expected result of your action versus the produced result
+
+Including as much detail will help me easily replicate the bug and investigate the cause and a solution. 
