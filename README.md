@@ -95,9 +95,10 @@ Run the app by using one of the options or provide an input argument:
 
 ## Bug Report
 
-When filing issues and bugs, you should include as much detail as possible:
+To report a bug simply create a new `issue` on the repository with the following information.
 
-- A short description of the bug
+- A short description of the bug as the title of the issue
+- A detailed description of the bug in the body
 - Steps to reproduce the bug (what were you doing when encountered the bug)
 - The expected result of your action versus the produced result
 
