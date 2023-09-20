@@ -95,7 +95,7 @@ Run the app by using one of the options or provide an input argument:
 
 ## Bug Report
 
-To report a bug simply create a new `issue` on the repository with the following information.
+To report a bug simply create a new `issue` on the repository with the following information:
 
 - A short description of the bug as the title of the issue
 - A detailed description of the bug in the body
