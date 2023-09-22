@@ -16,7 +16,7 @@ namespace Learn2Blog
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("                        Learn2Blog Help                     ");
             Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine("Learn2Blog - Convert .txt files to .html");
+            Console.WriteLine("Learn2Blog - Convert .txt and .md files to .html");
             Console.WriteLine("Usage 1: learn2blog [option]");
             Console.WriteLine("Usage 2: learn2blog <input>");
             Console.WriteLine("Usage 3: learn2blog -o <input> <output>");
