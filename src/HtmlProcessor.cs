@@ -58,10 +58,87 @@ namespace Learn2Blog
             return htmlBuilder.ToString();
         }
 
+        public static string ConvertMdToHtml(string title, string text)
+        {
+
+            StringBuilder htmlBuilder = new();
+
+            // Creating start of HTML file
+            htmlBuilder.AppendLine("<!DOCTYPE html>");
+            htmlBuilder.AppendLine("<html lang=\"en\">");
+
+            // Creating header
+            htmlBuilder.AppendLine("<head>");
+            htmlBuilder.AppendLine("<meta charset=\"utf-8\">");
+            htmlBuilder.AppendLine($"<title>{title}</title>");
+            htmlBuilder.AppendLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            htmlBuilder.AppendLine("</head>");
+            // End of header
+            
+            // Start of body
+            htmlBuilder.AppendLine("<body>");
+
+            // Split text into lines
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            // Initialize a flag to track whether a paragraph is open
+            bool paragraphOpen = false;
+
+            // Iterate through lines
+            foreach (string line in lines)
+            {
+                // Skip empty lines
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    if (paragraphOpen)
+                    {
+                        htmlBuilder.AppendLine("</p>");
+                        paragraphOpen = false;
+                    }
+                    continue;
+                }
+
+                // Replace **text** with <strong>text</strong>
+                string lineText = Regex.Replace(line, @"\*\*(.*?)\*\*", m => $"<strong>{m.Groups[1].Value}</strong>");
+
+                // Replace line breaks with spaces to keep the text in the same line
+                lineText = lineText.Replace("\r\n", " ").Trim();
+
+                // Open a new <p> tag if not already open
+                if (!paragraphOpen)
+                {
+                    htmlBuilder.AppendLine("<p>");
+                    paragraphOpen = true;
+                }
+
+                // Add line text
+                htmlBuilder.AppendLine(lineText);
+            }
+
+            // Close the last <p> tag if it's still open
+            if (paragraphOpen)
+            {
+                htmlBuilder.AppendLine("</p>");
+            }
+
+            htmlBuilder.AppendLine("</body>");
+            // Body end
+
+            htmlBuilder.AppendLine("</html>");
+            // HTML end
+
+            return htmlBuilder.ToString();
+        }
+
         public static void ProcessFile(string inputPath, string outputPath)
         {
-            // if the file is not a text file, log and return
-            if (Path.GetExtension(inputPath) != ".txt")
+            
+            if (Path.GetExtension(inputPath) == ".txt" || Path.GetExtension(inputPath) == ".md")
+            {
+                //Do nothing
+            }
+            // if the file is not a text or markdown file, log and return
+            else
             {
                 CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text file");
                 return;
@@ -70,11 +147,20 @@ namespace Learn2Blog
             try
             {
                 string text = File.ReadAllText(inputPath);
-                string html = ConvertTextToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
+                string html = "\0";
 
-                string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
-                File.WriteAllText(outputFileName, html);
+                if (Path.GetExtension(inputPath) == ".txt")
+                {
+                    html = ConvertTextToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
 
+                }
+                if (Path.GetExtension(inputPath) == ".md")
+                {
+                    html = ConvertMdToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
+                }
+                    string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
+                    File.WriteAllText(outputFileName, html);
+                
                 CommandLineUtils.Logger($"File converted: {outputFileName}");
             }
             catch (Exception ex)

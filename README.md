@@ -1,7 +1,7 @@
 # Learn2Blog
 
-This is an open source command line app to help you quickly convert your text and md notes into html files so they can be easily published on your blog.
-With this tool, you can write your notes in plain text or md files and convert them into html files with a single command. This way, you can focus on learning to blog and not worry about the technical details of creating a blog.
+This is an open source command line app to help you quickly convert your text and markdown notes into html files so they can be easily published on your blog.
+With this tool, you can write your notes in plain text or markdown files and convert them into html files with a single command. This way, you can focus on learning to blog and not worry about the technical details of creating a blog.
 
 ## Building and Running the App
 
@@ -73,7 +73,7 @@ Run the app by using one of the options or provide an input argument:
 ```
 
 ```bash
-# converts all .txt and md files in the directory into html and outputs in the default directory, unless specified with the -o flag
+# converts all .txt and .md files in the directory into html and outputs in the default directory, unless specified with the -o flag
 ./Learn2Blog.exe inputSampleDirectory
 ```
 

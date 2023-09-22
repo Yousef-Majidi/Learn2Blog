@@ -1,6 +1,4 @@
-﻿using Learn2Blog.src;
-
-namespace Learn2Blog
+﻿namespace Learn2Blog
 {
     class Program
     {
@@ -29,29 +27,17 @@ namespace Learn2Blog
                 {
                     CommandLineUtils.CreateOutputDirectory(outputPath);
 
-                    // Check file extension to decide whether to use MdProcessor or HtmlProcessor
-                    string fileExtension = Path.GetExtension(inputPath);
-                    if (fileExtension == ".md")
-                    {
-                        MdProcessor.ProcessFile(inputPath, outputPath);
-                    }
-                    else if (fileExtension == ".txt")
-                    {
-                        HtmlProcessor.ProcessFile(inputPath, outputPath);
-                    }
-                    else
-                    {
-                        CommandLineUtils.Logger($"Unsupported file format for input path: {inputPath}");
-                    }
+                   HtmlProcessor.ProcessFile(inputPath, outputPath);
                 }
                 else if (Directory.Exists(inputPath))
                 {
                     // Get all files in the directory and save them to the files array
-                    string[] files = Directory.GetFiles(inputPath, "*.*"); 
+                    string[] files = Directory.GetFiles(inputPath, "*.txt").Union(Directory.GetFiles(inputPath, "*.md")).ToArray();
+
 
                     if (files.Length == 0)
                     {
-                        CommandLineUtils.Logger($"No files found in directory {inputPath}");
+                        CommandLineUtils.Logger($"No .txt or .md files found in directory {inputPath}");
                         return;
                     }
 
@@ -59,20 +45,7 @@ namespace Learn2Blog
 
                     foreach (string file in files) // Go through the files array and convert ones that end with .md or .txt
                     {
-                        // Check file extension to decide whether to use MdProcessor or HtmlProcessor.
-                        string fileExtension = Path.GetExtension(file);
-                        if (fileExtension == ".md")
-                        {
-                            MdProcessor.ProcessFile(file, outputPath);
-                        }
-                        else if (fileExtension == ".txt")
-                        {
-                            HtmlProcessor.ProcessFile(file, outputPath);
-                        }
-                        else
-                        {
-                            CommandLineUtils.Logger($"Unsupported file format for file: {file}");
-                        }
+                        HtmlProcessor.ProcessFile(file, outputPath);
                     }
                 }
                 else
