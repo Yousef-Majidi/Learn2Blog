@@ -101,6 +101,7 @@ namespace Learn2Blog
                 // Replace **text** with <strong>text</strong>
                 string lineText = Regex.Replace(line, @"\*\*(.*?)\*\*", m => $"<strong>{m.Groups[1].Value}</strong>");
 
+
                 // Replace line breaks with spaces to keep the text in the same line
                 lineText = lineText.Replace("\r\n", " ").Trim();
 
@@ -132,41 +133,42 @@ namespace Learn2Blog
 
         public static void ProcessFile(string inputPath, string outputPath)
         {
-            
+
+            // if the file is a text or markdown file, then try to convert it
             if (Path.GetExtension(inputPath) == ".txt" || Path.GetExtension(inputPath) == ".md")
             {
-                //Do nothing
+                try
+                {
+                    string text = File.ReadAllText(inputPath);
+                    string html = "\0";
+
+                    if (Path.GetExtension(inputPath) == ".txt")
+                    {
+                        html = ConvertTextToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
+
+                    }
+                    else if (Path.GetExtension(inputPath) == ".md")
+                    {
+                        html = ConvertMdToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
+                    }
+                    string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
+                    File.WriteAllText(outputFileName, html);
+
+                    CommandLineUtils.Logger($"File converted: {outputFileName}");
+                }
+                catch (Exception ex)
+                {
+                    CommandLineUtils.Logger($"Error: failed to process file: {ex.Message}");
+                }
+                
             }
             // if the file is not a text or markdown file, log and return
             else
             {
-                CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text file");
+                CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text or markdown file");
                 return;
             }
-
-            try
-            {
-                string text = File.ReadAllText(inputPath);
-                string html = "\0";
-
-                if (Path.GetExtension(inputPath) == ".txt")
-                {
-                    html = ConvertTextToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
-
-                }
-                if (Path.GetExtension(inputPath) == ".md")
-                {
-                    html = ConvertMdToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
-                }
-                    string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
-                    File.WriteAllText(outputFileName, html);
-                
-                CommandLineUtils.Logger($"File converted: {outputFileName}");
-            }
-            catch (Exception ex)
-            {
-                CommandLineUtils.Logger($"Error: failed to process file: {ex.Message}");
-            }
+            
         }
 
         [GeneratedRegex("\\n\\s*\\n")]
