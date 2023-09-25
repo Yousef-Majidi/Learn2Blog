@@ -140,6 +140,23 @@ namespace Learn2Blog
                     html = HtmlBuilder(Path.GetFileNameWithoutExtension(inputPath), body);
 
                     string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
+
+                    // if a file with the same name already exists, append a number to the file name
+                    if (File.Exists(outputFileName))
+                    {
+                        int fileNumber = 1;
+                        string fileName = Path.GetFileNameWithoutExtension(inputPath);
+                        string newFileName = $"{fileName}_{fileNumber}";
+                        outputFileName = Path.Combine(outputPath, newFileName + ".html");
+
+                        while (File.Exists(outputFileName))
+                        {
+                            fileNumber++;
+                            newFileName = $"{fileName}_{fileNumber}";
+                            outputFileName = Path.Combine(outputPath, newFileName + ".html");
+                        }
+                    }
+
                     File.WriteAllText(outputFileName, html);
 
                     CommandLineUtils.Logger($"File converted: {outputFileName}");
@@ -156,6 +173,7 @@ namespace Learn2Blog
                 CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text or markdown file");
                 return;
             }
+
         }
 
         [GeneratedRegex("\\n\\s*\\n")]
