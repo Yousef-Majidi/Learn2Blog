@@ -27,13 +27,12 @@
                 {
                     CommandLineUtils.CreateOutputDirectory(outputPath);
 
-                   HtmlProcessor.ProcessFile(inputPath, outputPath);
+                    HtmlProcessor.ProcessFile(inputPath, outputPath);
                 }
                 else if (Directory.Exists(inputPath))
                 {
                     // Get all files in the directory and save them to the files array
                     string[] files = Directory.GetFiles(inputPath, "*.txt").Union(Directory.GetFiles(inputPath, "*.md")).ToArray();
-
 
                     if (files.Length == 0)
                     {
