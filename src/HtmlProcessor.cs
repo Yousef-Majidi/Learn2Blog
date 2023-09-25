@@ -5,16 +5,8 @@ namespace Learn2Blog
 {
     public partial class HtmlProcessor
     {
-        public static string ConvertTextToHtml(string title, string text)
+        public static string HtmlBuilder(string title, string body)
         {
-            // check for a title
-            int titleStart = text.IndexOf("\r\n\r\n\r\n");
-            if (titleStart > 0)
-            {
-                title = text[..titleStart].Trim();
-                text = text[(titleStart + 3)..].Trim();
-            }
-
             StringBuilder htmlBuilder = new();
 
             // html
@@ -31,24 +23,7 @@ namespace Learn2Blog
 
             // body
             htmlBuilder.AppendLine("<body>");
-
-            // title -- only if title is specified in the input file
-            if (titleStart > 0)
-            {
-                htmlBuilder.AppendLine($"<h1>{title}</h1>");
-            }
-
-            // split text into paragraphs based on new lines
-            string[] paragraphs = NewParagraphRegex().Split(text).Select(paragraph => paragraph.Trim()).ToArray();
-
-            // iterate through paragraphs and wrap each in <p> tags
-            foreach (string paragraph in paragraphs)
-            {
-                // replace line breaks with spaces to keep the text in the same line
-                string paragraphText = paragraph.Replace("\r\n", " ");
-                htmlBuilder.AppendLine($"<p>{paragraphText.Trim()}</p>");
-            }
-
+            htmlBuilder.AppendLine(body);
             htmlBuilder.AppendLine("</body>");
             // body end
 
@@ -58,25 +33,42 @@ namespace Learn2Blog
             return htmlBuilder.ToString();
         }
 
-        public static string ConvertMdToHtml(string title, string text)
+        public static string ProcessText(string text)
         {
+            string title = "";
+            StringBuilder stringBuilder = new();
 
-            StringBuilder htmlBuilder = new();
+            // check for a title
+            int titleStart = text.IndexOf("\r\n\r\n\r\n");
+            if (titleStart > 0)
+            {
+                title = text[..titleStart].Trim();
+                text = text[(titleStart + 3)..].Trim();
+            }
 
-            // Creating start of HTML file
-            htmlBuilder.AppendLine("<!DOCTYPE html>");
-            htmlBuilder.AppendLine("<html lang=\"en\">");
+            // title -- only if title is specified in the input file
+            if (titleStart > 0)
+            {
+                stringBuilder.AppendLine($"<h1>{title}</h1>");
+            }
 
-            // Creating header
-            htmlBuilder.AppendLine("<head>");
-            htmlBuilder.AppendLine("<meta charset=\"utf-8\">");
-            htmlBuilder.AppendLine($"<title>{title}</title>");
-            htmlBuilder.AppendLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            htmlBuilder.AppendLine("</head>");
-            // End of header
-            
-            // Start of body
-            htmlBuilder.AppendLine("<body>");
+            // split text into paragraphs based on new lines
+            string[] paragraphs = NewParagraphRegex().Split(text).Select(paragraph => paragraph.Trim()).ToArray();
+
+            // iterate through paragraphs and wrap each in <p> tags
+            foreach (string paragraph in paragraphs)
+            {
+                // replace line breaks with spaces to keep the text in the same line
+                string paragraphText = paragraph.Replace("\r\n", " ").Trim();
+                stringBuilder.AppendLine($"<p>{paragraphText}</p>");
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        public static string ProcessMarkdown(string text)
+        {
+            StringBuilder stringBuilder = new();
 
             // Split text into lines
             string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -92,15 +84,14 @@ namespace Learn2Blog
                 {
                     if (paragraphOpen)
                     {
-                        htmlBuilder.AppendLine("</p>");
+                        stringBuilder.AppendLine("</p>");
                         paragraphOpen = false;
                     }
                     continue;
                 }
 
                 // Replace **text** with <strong>text</strong>
-                string lineText = Regex.Replace(line, @"\*\*(.*?)\*\*", m => $"<strong>{m.Groups[1].Value}</strong>");
-
+                string lineText = StrongSyntaxRegex().Replace(line, m => $"<strong>{m.Groups[1].Value}</strong>");
 
                 // Replace line breaks with spaces to keep the text in the same line
                 lineText = lineText.Replace("\r\n", " ").Trim();
@@ -108,49 +99,46 @@ namespace Learn2Blog
                 // Open a new <p> tag if not already open
                 if (!paragraphOpen)
                 {
-                    htmlBuilder.AppendLine("<p>");
+                    stringBuilder.AppendLine("<p>");
                     paragraphOpen = true;
                 }
 
                 // Add line text
-                htmlBuilder.AppendLine(lineText);
+                stringBuilder.AppendLine(lineText);
             }
 
             // Close the last <p> tag if it's still open
             if (paragraphOpen)
             {
-                htmlBuilder.AppendLine("</p>");
+                stringBuilder.AppendLine("</p>");
             }
 
-            htmlBuilder.AppendLine("</body>");
-            // Body end
-
-            htmlBuilder.AppendLine("</html>");
-            // HTML end
-
-            return htmlBuilder.ToString();
+            return stringBuilder.ToString();
         }
 
         public static void ProcessFile(string inputPath, string outputPath)
         {
-
+            string ext = Path.GetExtension(inputPath);
             // if the file is a text or markdown file, then try to convert it
-            if (Path.GetExtension(inputPath) == ".txt" || Path.GetExtension(inputPath) == ".md")
+            if (ext == ".txt" || ext == ".md")
             {
                 try
                 {
                     string text = File.ReadAllText(inputPath);
-                    string html = "\0";
+                    string body = "";
+                    string html = "";
 
-                    if (Path.GetExtension(inputPath) == ".txt")
+                    if (ext == ".txt")
                     {
-                        html = ConvertTextToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
+                        body = ProcessText(text);
+                    }
+                    else
+                    {
+                        body = ProcessMarkdown(text);
+                    }
 
-                    }
-                    else if (Path.GetExtension(inputPath) == ".md")
-                    {
-                        html = ConvertMdToHtml(Path.GetFileNameWithoutExtension(inputPath), text);
-                    }
+                    html = HtmlBuilder(Path.GetFileNameWithoutExtension(inputPath), body);
+
                     string outputFileName = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(inputPath) + ".html");
                     File.WriteAllText(outputFileName, html);
 
@@ -160,7 +148,7 @@ namespace Learn2Blog
                 {
                     CommandLineUtils.Logger($"Error: failed to process file: {ex.Message}");
                 }
-                
+
             }
             // if the file is not a text or markdown file, log and return
             else
@@ -168,10 +156,12 @@ namespace Learn2Blog
                 CommandLineUtils.Logger($"The specified input file [{inputPath}] is not a text or markdown file");
                 return;
             }
-            
         }
 
         [GeneratedRegex("\\n\\s*\\n")]
         private static partial Regex NewParagraphRegex();
+
+        [GeneratedRegex("\\*\\*(.*?)\\*\\*")]
+        private static partial Regex StrongSyntaxRegex();
     }
 }
