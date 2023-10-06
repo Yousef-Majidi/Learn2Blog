@@ -46,19 +46,8 @@ namespace Learn2Blog
                     case "--config":
                         if (i + 1 < args.Length)
                         {
-                            options.ConfigPath = args[i + 1];
-                            i++; // Skip the next argument as it is the config file path
-
-                            CommandLineOptions? config = ParseConfigFile(options.ConfigPath ?? "");
-
-                            if (config != null)
-                            {
-                                options.OutputPath = config.OutputPath;
-                            }
-                            else
-                            {
-                                return null;
-                            }
+                            // If -c flag is present, parse the config file and ignore all other flags
+                            return ParseConfigFile(args[i + 1]);
                         }
                         else
                         {
@@ -66,7 +55,6 @@ namespace Learn2Blog
                             CommandLineUtils.ShowHelp();
                             return null;
                         }
-                        break;
                     default:
                         // The last argument without a flag is treated as the input file
                         options.InputPath = args[i];
