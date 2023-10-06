@@ -23,9 +23,10 @@ namespace Learn2Blog
             Console.WriteLine("NOTE:<input> can be a file or a directory");
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Options:");
-            Console.WriteLine("  -h, --ShowHelp     Show the help menu");
+            Console.WriteLine("  -h, --help         Show the help menu");
             Console.WriteLine("  -v, --version      Show version information");
             Console.WriteLine("  -o, --output       Specify output directory");
+            Console.WriteLine("  -c, --config       Specify config file");
             Console.WriteLine("------------------------------------------------------------");
         }
 

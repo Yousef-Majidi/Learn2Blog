@@ -11,7 +11,7 @@ To build and run this C# console application, follow these steps:
 
 Before you begin, make sure you have the following prerequisites installed on your system:
 
--   [.NET SDK](https://dotnet.microsoft.com/en-us/download) - Ensure you have the .NET SDK installed to build and run C# applications.
+- [.NET SDK](https://dotnet.microsoft.com/en-us/download) - Ensure you have the .NET SDK installed to build and run C# applications.
 
 ### 1. Clone the Repository
 
@@ -64,7 +64,7 @@ Run the app by using one of the options or provide an input argument:
 ```bash
 # converts the input.txt file into html and outputs in the specified output directory
 # can also be used with a directory as the input
-./Learn2Blog.exe -o inputSample.txt outputDirectory
+./Learn2Blog.exe -o outputDirectory inputSample.txt
 ```
 
 ```bash
@@ -83,24 +83,30 @@ Run the app by using one of the options or provide an input argument:
 ./Learn2Blog.exe inputSample.md
 ```
 
+```bash
+# uses the specified config file to convert the input.txt file into html and outputs in the default directory
+# the -o option from CLI will be ignored if specified in the config file
+./Learn2Blog.exe -c config.toml -o outputDirectory inputSample.txt
+```
 
 ### Notes on Usage:
 
--   The app will place the output in a directory called `til` by default.
--   If the output directory is specified with the `-o` flag, this directory will be used instead.
--   If the output directory already exists, the app will overwrite the files in it.
--   The name of the output file is the same name as the input file.
--   The title of the html file is the same as the input file name by default, unless a title is specified in the input file.
--   A title in the input file is the first line of the file followed by 2 empty lines:
+- The app will place the output in a directory called `til` by default.
+- If the output directory is specified with the `-o` flag, this directory will be used instead.
+- If the output directory already exists, the app will overwrite the files in it.
+- The name of the output file is the same name as the input file.
+- The title of the html file is the same as the input file name by default, unless a title is specified in the input file.
+- A title in the input file is the first line of the file followed by 2 empty lines:
 
-    ```txt
-    This is the title
-    <empty line>
-    <empty line>
-    This is the content of the file
-    ```
+  ```txt
+  This is the title
+  <empty line>
+  <empty line>
+  This is the content of the file
+  ```
 
--   The app will convert the bold markdown syntax into the `<strong>` html tag
+- The app will convert the bold markdown syntax into the `<strong>` html tag
+- If the `-c` flag is used, the app will use the specified config file to convert the input file.
 
 ## Bug Report
 
@@ -111,4 +117,4 @@ To report a bug simply create a new `issue` on the repository with the following
 - Steps to reproduce the bug (what were you doing when encountered the bug)
 - The expected result of your action versus the produced result
 
-Including as much detail will help me easily replicate the bug and investigate the cause and a solution. 
+Including as much detail will help me easily replicate the bug and investigate the cause and a solution.
