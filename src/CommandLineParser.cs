@@ -47,7 +47,10 @@ namespace Learn2Blog
                         if (i + 1 < args.Length)
                         {
                             // If -c flag is present, parse the config file and ignore all other flags
-                            return ParseConfigFile(args[i + 1]);
+                            var config = ParseConfigFile(args[i + 1]);
+                            if (config != null)
+                                config.InputPath = args[^1];
+                            return config;
                         }
                         else
                         {
