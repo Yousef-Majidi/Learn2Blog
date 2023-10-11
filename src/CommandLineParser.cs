@@ -31,7 +31,7 @@ namespace Learn2Blog
                         if (i + 1 < args.Length)
                         {
                             // Low priority: If the output path is not specified through the config file, use the one specified through CLI
-                            options.OutputPath ??= args[i + 1];
+                            options.OutputPath ??= Path.Combine(Path.GetDirectoryName(options.InputPath) ?? "", args[i + 1]);
                             i++; // Skip the next argument as it is the output file path
                         }
                         else
@@ -71,6 +71,12 @@ namespace Learn2Blog
                 CommandLineUtils.Logger("Error: Invalid command line arguments", "See the help menu below:");
                 CommandLineUtils.ShowHelp();
                 return null;
+            }
+
+            // check if output path is not set; if so, use the default './til' directory but relative to the input file
+            if (string.IsNullOrEmpty(options.OutputPath))
+            {
+                options.OutputPath = Path.Combine(Path.GetDirectoryName(options.InputPath) ?? "", "til");
             }
 
             return options;

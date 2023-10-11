@@ -7,9 +7,27 @@ namespace Learn2Blog
     {
         public static void ProcessFiles(CommandLineOptions options)
         {
-            if (File.Exists(options.InputPath)) ProcessFile(options.InputPath, options.OutputPath);
-            else if (Directory.Exists(options.InputPath)) ProcessFilesInDirectory(options.InputPath, options.OutputPath);
-            else CommandLineUtils.Logger($"Input path {options.InputPath} does not exist");
+            if (File.Exists(options.InputPath))
+            {
+                string ext = Path.GetExtension(options.InputPath);
+                if (ext == ".txt" || ext == ".md")
+                {
+                    CommandLineUtils.CreateOutputDirectory(options.OutputPath); // Create the output directory
+                    ProcessFile(options.InputPath, options.OutputPath);
+                }
+                else
+                {
+                    CommandLineUtils.Logger("The specified input file is not a .txt or .md file");
+                }
+            }
+            else if (Directory.Exists(options.InputPath))
+            {
+                ProcessFilesInDirectory(options.InputPath, options.OutputPath);
+            }
+            else
+            {
+                CommandLineUtils.Logger($"Input path {options.InputPath} does not exist");
+            }
         }
 
         private static void ProcessFile(string inputPath, string outputPath)
