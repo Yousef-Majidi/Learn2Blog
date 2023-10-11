@@ -15,8 +15,7 @@ namespace Learn2Blog
         private static void ProcessFile(string inputPath, string outputPath)
         {
             string ext = Path.GetExtension(inputPath);
-            string html = "";
-
+            string html;
             try
             {
                 string text = File.ReadAllText(inputPath);
@@ -40,7 +39,7 @@ namespace Learn2Blog
             }
 
             string outputFileName = GetUniqueOutputFileName(inputPath, outputPath);
-            FileUtility.SaveHtmlFile(outputFileName, html);
+            SaveHtmlFile(outputFileName, html);
 
             CommandLineUtils.Logger($"File converted: {outputFileName}");
         }
@@ -159,6 +158,11 @@ namespace Learn2Blog
             }
 
             return stringBuilder.ToString();
+        }
+
+        private static void SaveHtmlFile(string outputPath, string html)
+        {
+            File.WriteAllText(outputPath, html);
         }
 
         [GeneratedRegex("\\n\\s*\\n")]
