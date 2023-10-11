@@ -7,7 +7,7 @@ namespace Learn2Blog
             CommandLineOptions options = CommandLineParser.ParseCommandLineArgs(args) ?? new CommandLineOptions { InputPath = "" };
             if (options.ShowVersion) CommandLineUtils.ShowVersion();
             else if (options.ShowHelp) CommandLineUtils.ShowHelp();
-            else FileProcessor.ProcessFiles(options.InputPath);
+            else FileProcessor.ProcessFiles(options);
         }
     }
 }
