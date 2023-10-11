@@ -6,7 +6,6 @@ namespace Learn2Blog
     {
         public static CommandLineOptions? ParseCommandLineArgs(string[] args)
         {
-
             if (args.Length == 0)
             {
                 CommandLineUtils.Logger("Error: No command line arguments specified. See the help menu below:");
@@ -78,7 +77,6 @@ namespace Learn2Blog
         }
         public static CommandLineOptions? ParseConfigFile(string configPath)
         {
-
             if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
             {
                 CommandLineUtils.Logger($"Config file {configPath} does not exist");
@@ -97,9 +95,6 @@ namespace Learn2Blog
             }
             catch (TomlParseException ex)
             {
-                // Get access to the table that was parsed with best-effort.
-                // table = ex.ParsedTable;
-
                 // Handle syntax error in whatever fashion you prefer
                 foreach (TomlSyntaxException syntaxEx in ex.SyntaxErrors)
                     CommandLineUtils.Logger($"Error on {syntaxEx.Column}:{syntaxEx.Line}: {syntaxEx.Message}");
@@ -121,7 +116,6 @@ namespace Learn2Blog
             return options;
         }
     }
-
 
     public class CommandLineOptions
     {

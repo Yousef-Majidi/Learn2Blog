@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Learn2Blog
 {
-    public class FileProcessor
+    public partial class FileProcessor
     {
         public static void ProcessFiles(CommandLineOptions options)
         {
