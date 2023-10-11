@@ -4,50 +4,73 @@ namespace Learn2Blog
     {
         public static void ProcessFiles(CommandLineOptions options)
         {
-            if (File.Exists(options.InputPath))
+            if (File.Exists(options.InputPath)) ProcessFile(options.InputPath, options.OutputPath);
+            else if (Directory.Exists(options.InputPath)) ProcessFilesInDirectory(options.InputPath, options.OutputPath);
+            else CommandLineUtils.Logger($"Input path {options.InputPath} does not exist");
+        }
+
+        private static void ProcessFile(string inputPath, string outputPath)
+        {
+            string ext = Path.GetExtension(inputPath);
+            string html = "";
+
+            try
             {
-                string ext = Path.GetExtension(options.InputPath);
-                string html = "";
+                string text = File.ReadAllText(inputPath);
+                string body = "";
 
-                try
+                if (ext == ".txt")
                 {
-                    string text = File.ReadAllText(options.InputPath);
-                    string body = "";
-
-                    if (ext == ".txt") body = HtmlProcessor.ProcessText(text);
-                    else body = HtmlProcessor.ProcessMarkdown(text);
-
-                    html = HtmlGenerator.GenerateHtmlFromText(Path.GetFileNameWithoutExtension(options.InputPath), body);
+                    body = ProcessText(text);
                 }
-                catch (Exception ex)
+                else
                 {
-                    CommandLineUtils.Logger($"Error processing file {options.InputPath}: {ex.Message}");
-                    return;
+                    body = ProcessMarkdown(text);
                 }
 
-                string outputFileName = Path.Combine(options.OutputPath, Path.GetFileNameWithoutExtension(options.InputPath) + ".html");
-
-                int fileNumber = 1;
-                string fileName = Path.GetFileNameWithoutExtension(options.InputPath);
-                string newFileName = fileName;
-
-                while (File.Exists(outputFileName))
-                {
-                    newFileName = $"{fileName}_{fileNumber}";
-                    outputFileName = Path.Combine(options.OutputPath, newFileName + ".html");
-                    fileNumber++;
-                }
-
-                FileUtility.SaveHtmlFile(outputFileName, html);
-                CommandLineUtils.Logger($"File converted: {outputFileName}");
+                html = HtmlGenerator.GenerateHtmlFromText(Path.GetFileNameWithoutExtension(inputPath), body);
             }
-            else if (Directory.Exists(options.InputPath))
+            catch (Exception ex)
             {
-                ProcessFilesInDirectory(options.InputPath, options.OutputPath);
+                CommandLineUtils.Logger($"Error processing file {inputPath}: {ex.Message}");
+                return;
             }
-            else
+
+            string outputFileName = GetUniqueOutputFileName(inputPath, outputPath);
+            FileUtility.SaveHtmlFile(outputFileName, html);
+
+            CommandLineUtils.Logger($"File converted: {outputFileName}");
+        }
+
+        private static string GetUniqueOutputFileName(string inputPath, string outputPath)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(inputPath);
+            string outputFileName = Path.Combine(outputPath, fileName + ".html");
+
+            int fileNumber = 1;
+            while (File.Exists(outputFileName))
             {
-                CommandLineUtils.Logger($"Input path {options.InputPath} does not exist");
+                outputFileName = Path.Combine(outputPath, $"{fileName}_{fileNumber}.html");
+                fileNumber++;
+            }
+
+            return outputFileName;
+        }
+        private static void ProcessFilesInDirectory(string inputDirectory, string outputDirectory)
+        {
+            string[] files = Directory.GetFiles(inputDirectory, "*.txt").Union(Directory.GetFiles(inputDirectory, "*.md")).ToArray();
+
+            if (files.Length == 0)
+            {
+                CommandLineUtils.Logger($"No .txt or .md files found in directory {inputDirectory}");
+                return;
+            }
+
+            CommandLineUtils.CreateOutputDirectory(outputDirectory);
+
+            foreach (string file in files)
+            {
+                ProcessFile(file, outputDirectory);
             }
         }
     }
