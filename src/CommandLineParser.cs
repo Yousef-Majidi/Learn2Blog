@@ -2,6 +2,14 @@ using Tommy;
 
 namespace Learn2Blog
 {
+    public class CommandLineOptions
+    {
+        public bool ShowVersion { get; set; }
+        public bool ShowHelp { get; set; }
+        public required string InputPath { get; set; }
+        public required string OutputPath { get; set; }
+        public string? ConfigPath { get; set; }
+    }
     public class CommandLineParser
     {
         public static CommandLineOptions? ParseCommandLineArgs(string[] args)
@@ -13,7 +21,7 @@ namespace Learn2Blog
                 return null;
             }
 
-            CommandLineOptions options = new() { InputPath = "" };
+            CommandLineOptions options = new() { InputPath = "", OutputPath = "" };
             for (int i = 0; i < args.Length; i++)
             {
                 switch (args[i])
@@ -31,7 +39,7 @@ namespace Learn2Blog
                         if (i + 1 < args.Length)
                         {
                             // Low priority: If the output path is not specified through the config file, use the one specified through CLI
-                            options.OutputPath ??= Path.Combine(Path.GetDirectoryName(options.InputPath) ?? "", args[i + 1]);
+                            options.OutputPath = GetOutputPath(options.InputPath, args[i + 1]);
                             i++; // Skip the next argument as it is the output file path
                         }
                         else
@@ -62,7 +70,6 @@ namespace Learn2Blog
                         options.InputPath = args[i];
                         break;
                 }
-
             }
 
             // Check if input file is provided
@@ -73,10 +80,10 @@ namespace Learn2Blog
                 return null;
             }
 
-            // check if output path is not set; if so, use the default './til' directory but relative to the input file
+            // check if output is not provided, if not, use the default
             if (string.IsNullOrEmpty(options.OutputPath))
             {
-                options.OutputPath = Path.Combine(Path.GetDirectoryName(options.InputPath) ?? "", "til");
+                options.OutputPath = GetOutputPath(options.InputPath, "til");
             }
 
             return options;
@@ -90,7 +97,7 @@ namespace Learn2Blog
             }
             using StreamReader reader = File.OpenText(configPath);
 
-            CommandLineOptions options = new() { InputPath = "" };
+            CommandLineOptions options = new() { InputPath = "", OutputPath = "" };
             TomlTable? table = null;
 
             // Parse the table
@@ -111,25 +118,21 @@ namespace Learn2Blog
             // Get the values from the table and assign them to the options object
             if (table["o"].HasValue)
             {
-                options.OutputPath = table["o"].ToString();
-                Console.WriteLine(table["o"].HasValue);
+                options.OutputPath = table["o"].ToString()!;
             }
             else if (table["output"].HasValue)
-                options.OutputPath = table["output"].ToString();
+            {
+                options.OutputPath = table["output"].ToString()!;
+            }
             else
-                options.OutputPath = null;
-
+            {
+                options.OutputPath = GetOutputPath(options.InputPath, options.OutputPath);
+            }
             return options;
         }
-    }
-
-    public class CommandLineOptions
-    {
-        public bool ShowVersion { get; set; }
-        public bool ShowHelp { get; set; }
-        public required string InputPath { get; set; }
-        public string? OutputPath { get; set; }
-        public string? ConfigPath { get; set; }
-
+        private static string GetOutputPath(string inputPath, string outputPath)
+        {
+            return Path.Combine(Path.GetDirectoryName(inputPath) ?? "", outputPath);
+        }
     }
 }
