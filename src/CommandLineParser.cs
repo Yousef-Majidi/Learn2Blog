@@ -25,59 +25,13 @@ namespace Learn2Blog
 
             for (int i = 0; i < args.Length; i++)
             {
-                if (i == 0)
-                {
-                    options.InputPath = args[i];
-                    continue;
-                }
-                switch (args[i])
-                {
-                    case "-v":
-                    case "--version":
-                        options.ShowVersion = true;
-                        return options;
-                    case "-h":
-                    case "--help":
-                        options.ShowHelp = true;
-                        return options;
-                    case "-o":
-                    case "--output":
-                        if (i + 1 < args.Length)
-                        {
-                            // Low priority: If the output path is not specified through the config file, use the one specified through CLI
-                            options.OutputPath = GetOutputPath(options.InputPath, args[i + 1]);
-                            i++; // Skip the next argument as it is the output file path
-                        }
-                        else
-                        {
-                            CommandLineUtils.Logger("Error: Output flag must be used with an output path specified.", "See the help menu below:");
-                            CommandLineUtils.ShowHelp();
-                            return null;
-                        }
-                        break;
-                    case "-c":
-                    case "--config":
-                        if (i + 1 < args.Length)
-                        {
-                            // If -c flag is present, parse the config file and ignore all other flags
-                            var config = ParseConfigFile(args[i + 1]);
-                            if (config != null)
-                                options.OutputPath = config.OutputPath;
-                            return options;
-                        }
-                        else
-                        {
-                            CommandLineUtils.Logger("Error: Config flag must be used with a config path specified.", "See the help menu below:");
-                            CommandLineUtils.ShowHelp();
-                            return null;
-                        }
-                    default:
-                        break;
-                }
+                string arg = args[i];
+                if (TryHandleCommand(args, ref i, arg, options)) continue;
+                options.InputPath = args[0];
             }
 
             // Check if input file is provided
-            if (string.IsNullOrEmpty(options.InputPath))
+            if (string.IsNullOrEmpty(options.InputPath) && !options.ShowVersion && !options.ShowHelp)
             {
                 CommandLineUtils.Logger("Error: Invalid command line arguments", "See the help menu below:");
                 CommandLineUtils.ShowHelp();
@@ -92,7 +46,62 @@ namespace Learn2Blog
 
             return options;
         }
-        public static CommandLineOptions? ParseConfigFile(string configPath)
+
+        private static bool TryHandleCommand(string[] args, ref int index, string arg, CommandLineOptions options)
+        {
+            switch (arg)
+            {
+                case "-v":
+                case "--version":
+                    options.ShowVersion = true;
+                    return true;
+                case "-h":
+                case "--help":
+                    options.ShowHelp = true;
+                    return true;
+                case "-o":
+                case "--output":
+                    return HandleOutputCommand(args, ref index, options);
+                case "-c":
+                case "--config":
+                    options.InputPath = args[0];
+                    return HandleConfigCommand(args, ref index, options);
+                default:
+                    return false;
+            }
+        }
+
+        private static bool HandleOutputCommand(string[] args, ref int index, CommandLineOptions options)
+        {
+            if (index + 1 < args.Length)
+            {
+                string outputDir = args[index + 1];
+                options.OutputPath = GetOutputPath(options.InputPath, outputDir);
+                index++; // Skip the next argument as it is the output file path
+                return true;
+            }
+
+            CommandLineUtils.Logger("Error: Output flag must be used with an output path specified.", "See the help menu below:");
+            CommandLineUtils.ShowHelp();
+            return false;
+        }
+
+        private static bool HandleConfigCommand(string[] args, ref int index, CommandLineOptions options)
+        {
+            if (index + 1 < args.Length)
+            {
+                var config = ParseConfigFile(args[index + 1]);
+                if (config != null)
+                    options.OutputPath = GetOutputPath(options.InputPath, config.OutputPath);
+                return true;
+            }
+
+            CommandLineUtils.Logger("Error: Config flag must be used with a config path specified.", "See the help menu below:");
+            CommandLineUtils.ShowHelp();
+            return false;
+        }
+
+        private static CommandLineOptions? ParseConfigFile(string configPath)
         {
             if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
             {
@@ -126,7 +135,7 @@ namespace Learn2Blog
             }
             else if (table["output"].HasValue)
             {
-                options.OutputPath = table["output"].ToString()!;
+                options.OutputPath = GetOutputPath(options.InputPath, table["output"].ToString()!);
             }
             else
             {
