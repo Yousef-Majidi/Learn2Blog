@@ -22,8 +22,14 @@ namespace Learn2Blog
             }
 
             CommandLineOptions options = new() { InputPath = "", OutputPath = "" };
+
             for (int i = 0; i < args.Length; i++)
             {
+                if (i == 0)
+                {
+                    options.InputPath = args[i];
+                    continue;
+                }
                 switch (args[i])
                 {
                     case "-v":
@@ -56,8 +62,8 @@ namespace Learn2Blog
                             // If -c flag is present, parse the config file and ignore all other flags
                             var config = ParseConfigFile(args[i + 1]);
                             if (config != null)
-                                config.InputPath = args[^1];
-                            return config;
+                                options.OutputPath = config.OutputPath;
+                            return options;
                         }
                         else
                         {
@@ -66,8 +72,6 @@ namespace Learn2Blog
                             return null;
                         }
                     default:
-                        // The last argument without a flag is treated as the input file
-                        options.InputPath = args[i];
                         break;
                 }
             }
