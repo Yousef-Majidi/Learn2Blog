@@ -1,3 +1,7 @@
+﻿// <copyright file="CommandLineUtils.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Learn2Blog
 {
     public class CommandLineUtils
@@ -8,6 +12,7 @@ namespace Learn2Blog
             {
                 Directory.Delete(path, true);
             }
+
             Directory.CreateDirectory(path);
         }
 

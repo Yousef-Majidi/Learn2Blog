@@ -1,8 +1,12 @@
-using System.Text;
-using System.Text.RegularExpressions;
+﻿// <copyright file="FileProcessor.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Learn2Blog
 {
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     public partial class FileProcessor
     {
         public static void ProcessFiles(CommandLineOptions options)
@@ -12,7 +16,7 @@ namespace Learn2Blog
                 string ext = Path.GetExtension(options.InputPath);
                 if (ext == ".txt" || ext == ".md")
                 {
-                    CommandLineUtils.CreateOutputDirectory(options.OutputPath); // Create the output directory
+                    CommandLineUtils.CreateOutputDirectory(options.OutputPath); // Create the output directorya
                     ProcessFile(options.InputPath, options.OutputPath);
                 }
                 else
@@ -37,7 +41,7 @@ namespace Learn2Blog
             try
             {
                 string text = File.ReadAllText(inputPath);
-                string body = "";
+                string body = string.Empty;
 
                 if (ext == ".txt")
                 {
@@ -97,15 +101,15 @@ namespace Learn2Blog
 
         private static string ProcessText(string text)
         {
-            string title = "";
-            StringBuilder stringBuilder = new();
+            string title = string.Empty;
+            StringBuilder stringBuilder = new ();
 
             // check for a title
             int titleStart = text.IndexOf("\r\n\r\n\r\n");
             if (titleStart > 0)
             {
                 title = text[..titleStart].Trim();
-                text = text[(titleStart + 3)..].Trim();
+                text = text[(titleStart + 3) ..].Trim();
             }
 
             // title -- only if title is specified in the input file
@@ -130,7 +134,7 @@ namespace Learn2Blog
 
         private static string ProcessMarkdown(string text)
         {
-            StringBuilder stringBuilder = new();
+            StringBuilder stringBuilder = new ();
 
             // Split text into lines
             string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -149,6 +153,7 @@ namespace Learn2Blog
                         stringBuilder.AppendLine("</p>");
                         paragraphOpen = false;
                     }
+
                     continue;
                 }
 

@@ -1,3 +1,7 @@
+﻿// <copyright file="HtmlGenerator.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Learn2Blog
 {
     public class HtmlGenerator

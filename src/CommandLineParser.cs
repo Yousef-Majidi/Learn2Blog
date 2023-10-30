@@ -1,15 +1,24 @@
-using Tommy;
+﻿// <copyright file="CommandLineParser.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Learn2Blog
 {
+    using Tommy;
+
     public class CommandLineOptions
     {
         public bool ShowVersion { get; set; }
+
         public bool ShowHelp { get; set; }
-        public required string InputPath { get; set; }
-        public required string OutputPath { get; set; }
+
+        required public string InputPath { get; set; }
+
+        required public string OutputPath { get; set; }
+
         public string? ConfigPath { get; set; }
     }
+
     public class CommandLineParser
     {
         public static CommandLineOptions? ParseCommandLineArgs(string[] args)
@@ -21,12 +30,16 @@ namespace Learn2Blog
                 return null;
             }
 
-            CommandLineOptions options = new() { InputPath = "", OutputPath = "" };
+            CommandLineOptions options = new () { InputPath = string.Empty, OutputPath = string.Empty };
 
             for (int i = 0; i < args.Length; i++)
             {
                 string arg = args[i];
-                if (TryHandleCommand(args, ref i, arg, options)) continue;
+                if (TryHandleCommand(args, ref i, arg, options))
+                {
+                    continue;
+                }
+
                 options.InputPath = args[0];
             }
 
@@ -92,7 +105,10 @@ namespace Learn2Blog
             {
                 var config = ParseConfigFile(args[index + 1]);
                 if (config != null)
+                {
                     options.OutputPath = GetOutputPath(options.InputPath, config.OutputPath);
+                }
+
                 return true;
             }
 
@@ -108,9 +124,10 @@ namespace Learn2Blog
                 CommandLineUtils.Logger($"Config file {configPath} does not exist");
                 return null;
             }
+
             using StreamReader reader = File.OpenText(configPath);
 
-            CommandLineOptions options = new() { InputPath = "", OutputPath = "" };
+            CommandLineOptions options = new () { InputPath = string.Empty, OutputPath = string.Empty };
             TomlTable? table = null;
 
             // Parse the table
@@ -123,7 +140,9 @@ namespace Learn2Blog
             {
                 // Handle syntax error in whatever fashion you prefer
                 foreach (TomlSyntaxException syntaxEx in ex.SyntaxErrors)
+                {
                     CommandLineUtils.Logger($"Error on {syntaxEx.Column}:{syntaxEx.Line}: {syntaxEx.Message}");
+                }
 
                 return null;
             }
@@ -131,21 +150,23 @@ namespace Learn2Blog
             // Get the values from the table and assign them to the options object
             if (table["o"].HasValue)
             {
-                options.OutputPath = table["o"].ToString()!;
+                options.OutputPath = table["o"].ToString() !;
             }
             else if (table["output"].HasValue)
             {
-                options.OutputPath = GetOutputPath(options.InputPath, table["output"].ToString()!);
+                options.OutputPath = GetOutputPath(options.InputPath, table["output"].ToString() !);
             }
             else
             {
                 options.OutputPath = GetOutputPath(options.InputPath, options.OutputPath);
             }
+
             return options;
         }
+
         private static string GetOutputPath(string inputPath, string outputPath)
         {
-            return Path.Combine(Path.GetDirectoryName(inputPath) ?? "", outputPath);
+            return Path.Combine(Path.GetDirectoryName(inputPath) ?? string.Empty, outputPath);
         }
     }
 }
