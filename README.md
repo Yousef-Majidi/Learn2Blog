@@ -62,30 +62,30 @@ Run the app by using one of the options or provide an input argument:
 ```
 
 ```bash
-# converts the input.txt file into html and outputs in the specified output directory
+# converts the input.txt file into HTML and outputs in the specified output directory
 # can also be used with a directory as the input
 ./Learn2Blog.exe -o outputDirectory inputSample.txt
 ```
 
 ```bash
-# converts the input.txt file into html and outputs in the default directory
+# converts the input.txt file into HTML and outputs in the default directory
 ./Learn2Blog.exe inputSample.txt
 ```
 
 ```bash
-# converts all .txt and .md files in the directory into html and outputs in the default directory, unless specified with the -o flag
+# converts all .txt and .md files in the directory into HTML and outputs in the default directory, unless specified with the -o flag
 ./Learn2Blog.exe inputSampleDirectory
 ```
 
 ```bash
-# converts the input.md file into html and outputs in the default directory
+# converts the input.md file into HTML and outputs in the default directory
 # the -o option can also be used in the same way as above
 ./Learn2Blog.exe inputSample.md
 ```
 
 ```bash
-# uses the specified config file to convert the input.txt file into html and outputs in the default directory
-# the -o option from CLI will be ignored if specified in the config file
+# uses the specified config file to convert the input.txt file into HTML and outputs in the default directory
+# The -o option from CLI will be ignored if specified in the config file
 ./Learn2Blog.exe -c config.toml -o outputDirectory inputSample.txt
 ```
 
@@ -93,9 +93,9 @@ Run the app by using one of the options or provide an input argument:
 
 -   The app will place the output in a directory called `til` by default.
 -   If the output directory is specified with the `-o` flag, this directory will be used instead.
--   If the output directory already exists, the app will overwrite the files in it.
--   The name of the output file is the same name as the input file.
--   The title of the html file is the same as the input file name by default unless a title is specified in the input file.
+-   If the output directory already exists, the app will overwrite its files.
+-   The name of the output file is the same as the input file.
+-   The title of the HTML file is the same as the input file name by default unless a title is specified in the input file.
 -   A title in the input file is the first line of the file followed by 2 empty lines:
 
     ```txt
