@@ -109,4 +109,4 @@ Run the app by using one of the options or provide an input argument:
 -   If the `-c` flag is used, the app will use the specified config file to convert the input file.
 
 ## Contributions
-See [CONTRIBUTING.md](https://github.com/Yousef-Majidi/Learn2Blog/blob/main/CONTRIBUTING.md
+See [CONTRIBUTING.md](https://github.com/Yousef-Majidi/Learn2Blog/blob/main/CONTRIBUTING.md)
