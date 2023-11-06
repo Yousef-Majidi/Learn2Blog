@@ -159,7 +159,16 @@ git checkout -b <topic-branch-name>
 
 Make whatever changes related to the issue you are working on.
 
-#### 7. Format Your Code
+#### 7. Test Your Code
+
+Change directory to the `tests` folder and run the test suite:
+
+```bash
+cd tests
+dotnet test
+```
+
+#### 8. Format Your Code
 
 If you are using VS Code, you can run the `Format` [task](https://code.visualstudio.com/docs/editor/tasks) to automatically format your code by following the steps below:
 
@@ -175,15 +184,15 @@ dotnet format Learn2Block.csproj --verbosity n
 
 > See `dotnet format -h` for more formatting options.
 
-#### 8. Analyze Your Code
+#### 9. Analyze Your Code
 
 Running the Formatter will also run the code analyzer and fix any potential issues it can find. However, some issues will not automatically fix. You can read the produced log to find them. Alternatively, the code analyzer will run upon build and will print the log to the console when it finds any errors.
 
-#### 9. Commit Changes
+#### 10. Commit Changes
 
-Commit your changes using a descriptive commit message. Commit messages are used to generate release notes.
+Commit your changes using a descriptive commit message.
 
-#### 10. Push Changes
+#### 11. Push Changes
 
 Push your changes to the remote repository on GitHub:
 
@@ -191,7 +200,7 @@ Push your changes to the remote repository on GitHub:
 git push origin <topic-branch-name>
 ```
 
-#### 11. Submit a Pull Request
+#### 12. Submit a Pull Request
 
 Go to the [Pull Requests](https://github.com/Yousef-Majidi/Learn2Blog/pulls) tab on GitHub and click the "New pull request" button. Select the branch you made changes to and fill out the form. Pull requests are reviewed by the project maintainers.
 

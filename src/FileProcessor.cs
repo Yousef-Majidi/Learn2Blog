@@ -16,7 +16,7 @@ namespace Learn2Blog
                 string ext = Path.GetExtension(options.InputPath);
                 if (ext == ".txt" || ext == ".md")
                 {
-                    CommandLineUtils.CreateOutputDirectory(options.OutputPath); // Create the output directorya
+                    CommandLineUtils.CreateOutputDirectory(options.OutputPath); // Create the output directory
                     ProcessFile(options.InputPath, options.OutputPath);
                 }
                 else
@@ -102,14 +102,14 @@ namespace Learn2Blog
         private static string ProcessText(string text)
         {
             string title = string.Empty;
-            StringBuilder stringBuilder = new ();
+            StringBuilder stringBuilder = new();
 
             // check for a title
             int titleStart = text.IndexOf("\r\n\r\n\r\n");
             if (titleStart > 0)
             {
                 title = text[..titleStart].Trim();
-                text = text[(titleStart + 3) ..].Trim();
+                text = text[(titleStart + 3)..].Trim();
             }
 
             // title -- only if title is specified in the input file
@@ -134,7 +134,7 @@ namespace Learn2Blog
 
         private static string ProcessMarkdown(string text)
         {
-            StringBuilder stringBuilder = new ();
+            StringBuilder stringBuilder = new();
 
             // Split text into lines
             string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);

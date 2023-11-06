@@ -1,7 +1,6 @@
 ﻿// <copyright file="CommandLineParser.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
 namespace Learn2Blog
 {
     using Tommy;
@@ -30,7 +29,7 @@ namespace Learn2Blog
                 return null;
             }
 
-            CommandLineOptions options = new () { InputPath = string.Empty, OutputPath = string.Empty };
+            CommandLineOptions options = new() { InputPath = string.Empty, OutputPath = string.Empty };
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -127,7 +126,7 @@ namespace Learn2Blog
 
             using StreamReader reader = File.OpenText(configPath);
 
-            CommandLineOptions options = new () { InputPath = string.Empty, OutputPath = string.Empty };
+            CommandLineOptions options = new() { InputPath = string.Empty, OutputPath = string.Empty };
             TomlTable? table = null;
 
             // Parse the table
@@ -150,11 +149,11 @@ namespace Learn2Blog
             // Get the values from the table and assign them to the options object
             if (table["o"].HasValue)
             {
-                options.OutputPath = table["o"].ToString() !;
+                options.OutputPath = table["o"].ToString()!;
             }
             else if (table["output"].HasValue)
             {
-                options.OutputPath = GetOutputPath(options.InputPath, table["output"].ToString() !);
+                options.OutputPath = GetOutputPath(options.InputPath, table["output"].ToString()!);
             }
             else
             {
