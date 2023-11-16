@@ -36,7 +36,6 @@ jobs:
       # restore dependencies
       - name: "Restore dependencies"
         run: dotnet restore
-        working-directory: .
 
       # build
       - name: "Build"
