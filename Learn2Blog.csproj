@@ -10,6 +10,7 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>      
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
 
   <ItemGroup>
