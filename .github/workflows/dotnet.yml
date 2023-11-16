@@ -15,7 +15,7 @@ jobs:
     env:
       BUILD_CONFIG: "Release"
       Solution_Name: Learn2Blog.sln
-      #Test_Project_Path: tests/Learn2BlogTest.csproj
+      Test_Project_Path: tests/Learn2BlogTest.csproj
 
     runs-on: windows-latest
     permissions:
@@ -45,5 +45,5 @@ jobs:
 
       # test
       - name: "Run tests"
-        run: dotnet test --no-build
+        run: dotnet test
         working-directory: tests
