@@ -17,7 +17,7 @@ jobs:
       Solution_Name: Learn2Blog.sln
       Test_Project_Path: tests/Learn2BlogTest.csproj
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -31,7 +31,7 @@ jobs:
 
       # install dotnet
       - name: "Setup .NET"
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
 
