@@ -12,20 +12,14 @@ on:
       - main
 jobs:
   build-test:
-    env:
-      BUILD_CONFIG: "Release"
-      Solution_Name: Learn2Blog.sln
-      Test_Project_Path: tests/Learn2BlogTest.csproj
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
+      - uses: actions/checkout@v3
       # checkout code
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -41,9 +35,9 @@ jobs:
 
       # build
       - name: "Build"
-        run: dotnet build --configuration ${{ env.BUILD_CONFIG }}
+        run: dotnet build --no-restore
 
       # test
       - name: "Run tests"
-        run: dotnet test
+        run: dotnet test --no-build --verbosity normal
         working-directory: tests

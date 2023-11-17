@@ -92,12 +92,12 @@ namespace Learn2BlogTest
             Assert.Equal(outputPath, options?.OutputPath);
         }
 
-     // TODO: test not implemented
-     //    [Theory]
-     //    [InlineData("-c")]
-     //    [InlineData("--config")]
-     //    public void TestConfigArgument()
-     //    {
-     //    }
+        // TODO: test not implemented
+        //    [Theory]
+        //    [InlineData("-c")]
+        //    [InlineData("--config")]
+        //    public void TestConfigArgument()
+        //    {
+        //    }
     }
 }
