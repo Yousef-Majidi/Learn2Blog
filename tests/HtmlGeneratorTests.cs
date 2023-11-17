@@ -1,4 +1,4 @@
-// <copyright file="HtmlGeneratorTests.cs" company="PlaceholderCompany">
+﻿// <copyright file="HtmlGeneratorTests.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -23,7 +23,7 @@ namespace Learn2BlogTest
             this.output.WriteLine("Tests that the HtmlGeneratorContent's GenerateHtmlFromText() returns correct string.");
 
             Assert.Equal(
-                @"<!DOCTYPE html>
+                $@"<!DOCTYPE html>
                  <html lang=""en"">
                  <head>
                      <meta charset=""utf-8"">

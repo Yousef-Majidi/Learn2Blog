@@ -79,7 +79,7 @@ namespace Learn2BlogTest
             {
                 Assert.Contains(message, consoleOutput);
             }
-            
+
             Console.SetOut(currentOut);
         }
 
